@@ -22,7 +22,7 @@ def stamplingar(kortnummer):
     if not a:
         print("Anvandaren finns inte.")
 
-    alla_stamplingar = db.stamplingar(kortnummer)
+    alla_stamplingar = db.stamplingar(antal=13)
 
     return alla_stamplingar
 

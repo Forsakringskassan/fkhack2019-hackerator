@@ -97,11 +97,14 @@ def stampla(kortnummer):
     return {'status': new_status, 'tid': new_ts, 'datum': new_date}
 
 
-def stamplingar(kortnummer):
+def stamplingar(kortnummer = None, antal = 10):
     anvandare, stamplingar = connect_db()
 
     alla_stamplingar = list()
-    data = stamplingar.execute("select * from stamplingar order by tid").fetchall()
+    if kortnummer is None:
+        data = stamplingar.execute("select * from stamplingar order by tid desc limit " + str(antal)).fetchall()
+    else:
+        data = stamplingar.execute("select * from stamplingar where kortnummer=" + kortnummer + " order by tid desc limit" + antal).fetchall()
     for row in data:
         datum = datetime.utcfromtimestamp(row[1]).strftime('%Y-%m-%d %H:%M:%S')
 

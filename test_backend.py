@@ -38,6 +38,7 @@ if action == 'stampla':
 elif action == 'stamplingar':
     stamplingar = stamplare.stamplingar(data)
     for row in stamplingar:
+        print(row)
         if row['status'] == 0:
             status = "UT"
         else:
