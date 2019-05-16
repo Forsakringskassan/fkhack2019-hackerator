@@ -1,12 +1,15 @@
 from flask import Flask, request, render_template
 from flask_bootstrap import Bootstrap
 from server.hackerator.gui.gui import gui_blueprint
+from server.hackerator.gui.user import user_blueprint
+
 from flask_socketio import SocketIO, emit
 import json
 import db_functions as db
 
 application = Flask(__name__, static_folder="gui/static")
 application.register_blueprint(gui_blueprint)
+application.register_blueprint(user_blueprint)
 bootstrap = Bootstrap(application)
 socketio = SocketIO(application)
 @socketio.on('connect', namespace='/gui')
@@ -45,7 +48,7 @@ def status(id):
     return "status" + id
 
 
-application.route("/stamps/<kortnummer>")
+@application.route("/stamps/<kortnummer>")
 def stamps(kortnummer):
     a=db.hamta_anvandare(kortnummer = kortnummer)
     if not a:
