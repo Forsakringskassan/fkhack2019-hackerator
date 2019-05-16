@@ -47,6 +47,29 @@ def hamta_anvandare(rfid = None, kortnummer = None):
         return None
 
 
+def lista_anvandare():
+    anvandare, stamplingar = connect_db()
+    a = anvandare.execute("select * from anvandare order by efternamn, fornamn").fetchall()
+    anvandare = list()
+    for row in a:
+        print(row)
+        anvandare.append({'rfid': row[0], 'kortnummer': row[1], 'fornamn': row[2], 'efternamn': row[3]})
+    return anvandare
+
+
+def skapa_anvandare(rfid, kortnummer, fornamn, efternamn):
+    anvandare, stamplingar = connect_db()
+    if anvandare.execute("select count(*) from anvandare where kortnummer=" + kortnummer).fetchone()[0] != 0:
+        print("Anvandare med kortnummer " + str(kortnummer) + " finns redan.")
+        return False
+    if anvandare.execute("select count(*) from anvandare where rfid='" + rfid + "'").fetchone()[0] != 0:
+        print("Anvandare med RFID-kort " + rfid + " finns redan.")
+        return False
+
+    anvandare.execute("insert into anvandare values('" + rfid + "'," + kortnummer + ",'" + fornamn + "','" + efternamn + "')")
+    anvandare.commit()
+    return True
+
 
 def stampla(kortnummer):
     # Stamplar in. typ: 1=in, 0=ut
@@ -82,3 +105,4 @@ def stamplingar(kortnummer):
     for row in data:
         alla_stamplingar.append({'kortnummer': row[0], 'tid': row[1], 'status': row[2]})
     return alla_stamplingar
+

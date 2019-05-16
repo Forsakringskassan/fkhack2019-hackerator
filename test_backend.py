@@ -48,11 +48,39 @@ elif action == 'stamplingar':
         print(date + ": " + status)
 
 elif action == 'anvandare':
-    user = db.hamta_anvandare(kortnummer = data)
-    print("Fornamn:           " + user['fornamn'])
-    print("Efternamn:         " + user['efternamn'])
-    print("FK-kortnummer:     " + str(user['kortnummer']))
-    print("RFID-kortnummer:   " + user['rfid'])
+    if data == 'alla':
+        anvandare = db.lista_anvandare()
+        n = 1
+        for a in anvandare:
+            print("Anvandare #" + str(n))
+            print("    Fornamn:           " + a['fornamn'])
+            print("    Efternamn:         " + a['efternamn'])
+            print("    FK-kortnummer:     " + str(a['kortnummer']))
+            print("    RFID-kortnummer:   " + a['rfid'])
+            n += 1
+    else:
+        user = db.hamta_anvandare(kortnummer = data)
+        print(user)
+        print("Fornamn:           " + user['fornamn'])
+        print("Efternamn:         " + user['efternamn'])
+        print("FK-kortnummer:     " + str(user['kortnummer']))
+        print("RFID-kortnummer:   " + user['rfid'])
+
+elif action == 'skapa':
+    if len(sys.argv) < 6:
+        usage()
+
+    kortnummer = sys.argv[3]
+    fornamn = sys.argv[4]
+    efternamn = sys.argv[5]
+    print("Fornamn:           " + fornamn)
+    print("Efternamn:         " + efternamn)
+    print("FK-kortnummer:     " + str(kortnummer))
+    print("RFID-kortnummer:   " + data)
+    result = db.skapa_anvandare(rfid = data, kortnummer = kortnummer, fornamn = fornamn, efternamn = efternamn)
+    print("R:")
+    print(result)
+
 
 else:
     usage()
