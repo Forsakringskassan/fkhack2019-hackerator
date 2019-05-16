@@ -6,7 +6,7 @@ import time
 
 def connect_db():
 
-    dbdir = os.environ['HOME'] + '/hackerator/db'
+    dbdir = os.environ['HOME'] + '/db'
     anvandare = sqlite3.connect(dbdir + '/hackerator_anvandare.db')
     stamplingar = sqlite3.connect(dbdir + '/hackerator_stamplingar.db')
 
