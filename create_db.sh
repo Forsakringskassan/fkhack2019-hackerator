@@ -1,7 +1,7 @@
 #!/bin/sh
 
-DBDIR=$HOME/hackerator/db
-
+DBDIR=$HOME/db
+mkdir -p $DBDIR
 
 sqlite3 $DBDIR/hackerator_anvandare.db "create table anvandare(rfid text, kortnummer int, fornamn text, efternamn text);"
 sqlite3 $DBDIR/hackerator_anvandare.db "insert into anvandare values ('101 102 103 104', '40043907', 'Fredrik', 'W');"
