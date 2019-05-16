@@ -4,10 +4,18 @@ from server.hackerator.gui.gui import gui_blueprint
 from flask_socketio import SocketIO, emit
 import time
 
-application = Flask(__name__)
+application = Flask(__name__, static_folder="gui/static")
 application.register_blueprint(gui_blueprint)
 bootstrap = Bootstrap(application)
 socketio = SocketIO(application)
+@socketio.on('connect', namespace='/gui')
+def gui_connect():
+    print("Client connected")
+
+@socketio.on('disconnect', namespace='/gui')
+def gui_disconnect():
+    print("Client disconnected")
+
 
 @application.route("/")
 def hello():
@@ -16,7 +24,7 @@ def hello():
 @application.route("/toggle/<id>")
 def toggle(id):
     now = time.time()
-    emit('toggle', {'id': id, 'timestmp:': now})
+    emit('toggle', {'id': id, 'timestmp:': now}, namespace='/gui', broadcast=True)
     return "Toggle" + id
 
 @application.route("/status/<id>")
