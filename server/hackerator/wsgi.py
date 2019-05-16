@@ -46,23 +46,6 @@ def toggle(id):
     return json.dumps(returnjson)
 
 
-@application.route("/status/<id>")
-def status(id):
-    return "status" + id
-
-
-@application.route("/stamps/<kortnummer>")
-def stamps(kortnummer):
-    a=db.hamta_anvandare(kortnummer = kortnummer)
-    if not a:
-        print("Anvandaren finns inte.")
-
-    alla_stamplingar = db.stamplingar(kortnummer)
-
-    emit('stamps', {'kortnummer': kortnummer, 'stamps': stamps}, namespace='/gui', broadcast=True)
-    return "Stamps" + kortnummer
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Parameters for socketio')
     parser.add_argument('--host', default="127.0.0.1", help='Host')
