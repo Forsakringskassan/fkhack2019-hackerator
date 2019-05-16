@@ -5,6 +5,7 @@ from flask_socketio import SocketIO, emit
 import time
 import json
 import db_functions as db
+from datetime import datetime
 
 application = Flask(__name__, static_folder="gui/static")
 application.register_blueprint(gui_blueprint)
@@ -34,7 +35,8 @@ def toggle(id):
         returnjson = {'kortnummer': 0, 'status': 'fail', 'timestamp': 0}
     else:
         status, ts = db.stampla(a['kortnummer'])
-        returnjson = {'kortnummer': a['kortnummer'], 'status': status, 'timestamp': ts},
+        togglets = datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        returnjson = {'kortnummer': a['kortnummer'], 'status': status, 'timestamp': togglets},
         emit('toggle', returnjson, namespace='/gui',
              broadcast=True)
 
