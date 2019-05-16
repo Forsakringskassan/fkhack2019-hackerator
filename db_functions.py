@@ -1,14 +1,34 @@
 #!/usr/bin/env python3
 
+
 import sqlite3
 import os
 import time
 
 def connect_db():
 
-    dbdir = os.environ['HOME'] + '/db'
-    anvandare = sqlite3.connect(dbdir + '/hackerator_anvandare.db')
-    stamplingar = sqlite3.connect(dbdir + '/hackerator_stamplingar.db')
+    dbdir = os.environ['HOME'] + '/db/'
+    anvandare_fil = dbdir + '/hackerator_anvandare.db'
+    stamplingar_fil = dbdir + '/hackerator_stamplingar.db'
+
+    if not os.path.exists(dbdir):
+        os.makedirs(dbdir)
+
+    if not os.path.isfile(anvandare_fil):
+        # Skapa databasen anvandare
+        anvandare = sqlite3.connect(anvandare_fil)
+        anvandare.execute("create table anvandare(rfid text, kortnummer int, fornamn text, efternamn text);")
+        anvandare.execute("insert into anvandare values ('1234', '40043907', 'Fredrik', 'W');")
+        anvandare.commit()
+    else:
+        anvandare = sqlite3.connect(anvandare_fil)
+
+    if not os.path.isfile(stamplingar_fil):
+        # Skapa databasen stamplingar
+        stamplingar = sqlite3.connect(dbdir + '/hackerator_stamplingar.db')
+        stamplingar.execute("create table stamplingar(kortnummer int, tid int, typ int);")
+    else:
+        stamplingar = sqlite3.connect(dbdir + '/hackerator_stamplingar.db')
 
     return anvandare, stamplingar
 
