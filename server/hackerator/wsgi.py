@@ -31,13 +31,14 @@ def toggle(id):
     a=db.hamta_anvandare(rfid=id)
 
     if a is None:
-        a = {'kortnummer': 0, 'status': 'fail', 'timestamp': 0}
+        returnjson = {'kortnummer': 0, 'status': 'fail', 'timestamp': 0}
     else:
         status, ts = db.stampla(a['kortnummer'])
-        emit('toggle', {'kortnummer': a['kortnummer'], 'status': status, 'timestamp': ts}, namespace='/gui',
+        returnjson = {'kortnummer': a['kortnummer'], 'status': status, 'timestamp': ts},
+        emit('toggle', returnjson, namespace='/gui',
              broadcast=True)
 
-    return json.dumps(a)
+    return json.dumps(returnjson)
 
 
 @application.route("/status/<id>")
