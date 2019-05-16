@@ -26,7 +26,7 @@ def connect_db():
     if not os.path.isfile(stamplingar_fil):
         # Skapa databasen stamplingar
         stamplingar = sqlite3.connect(dbdir + '/hackerator_stamplingar.db')
-        stamplingar.execute("create table stamplingar(kortnummer int, tid int, typ int);")
+        stamplingar.execute("create table stamplingar(kortnummer int, tid real, typ int);")
     else:
         stamplingar = sqlite3.connect(dbdir + '/hackerator_stamplingar.db')
 
@@ -78,8 +78,7 @@ def stampla(kortnummer):
     #print(last_event)
 
 
-    new_ts = int(time.time())
-
+    new_ts = time.time()
     if not last_event:
         # Dagens forsta instampling
         new_status = 1
