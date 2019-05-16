@@ -11,10 +11,11 @@ def stampla(rfid):
     #print(a)
 
     if not a:
-        return None, "Fel: Kortet ar inte registrerat."
+        return {'status': None, 'fel': "Fel: Kortet ar inte registrerat."}
 
-    status, ts = db.stampla(a['kortnummer'])
-    return status, ts
+    resultat = db.stampla(a['kortnummer'])
+    return resultat
+
 
 def stamplingar(kortnummer):
     a=db.hamta_anvandare(kortnummer = kortnummer)

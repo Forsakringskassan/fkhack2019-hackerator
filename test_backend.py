@@ -24,28 +24,26 @@ data = sys.argv[2]
 #print("D: " + data)
 
 if action == 'stampla':
-    status, ts = stamplare.stampla(data)
-    if status is None:
-        print(ts)
+    result = stamplare.stampla(data)
+    if result['status'] is None:
+        print(result['fel'])
     else:
         print("Resultat fran stampling:")
-        date = datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-        if status == 0:
-            print("Du blev utstamplad " + date)
+        if result['status'] == 0:
+            print("Du blev utstamplad " + result['datum'])
         else:
-            print("Du blev instamplad " + date)
+            print("Du blev instamplad " + result['datum'])
 
 
 elif action == 'stamplingar':
     stamplingar = stamplare.stamplingar(data)
     for row in stamplingar:
-        date=datetime.utcfromtimestamp(row['tid']).strftime('%Y-%m-%d %H:%M:%S')
         if row['status'] == 0:
             status = "UT"
         else:
             status = "IN"
 
-        print(date + ": " + status)
+        print(row['datum'] + " (" + str(row['tid']) + "): " + status)
 
 elif action == 'anvandare':
     if data == 'alla':

@@ -4,6 +4,7 @@
 import sqlite3
 import os
 import time
+from datetime import datetime
 
 def connect_db():
 
@@ -92,8 +93,8 @@ def stampla(kortnummer):
 
     stamplingar.execute("insert into stamplingar values(" + str(kortnummer) + "," + str(new_ts) + "," + str(new_status) + ");")
     stamplingar.commit()
-
-    return new_status, new_ts
+    new_date = datetime.utcfromtimestamp(new_ts).strftime('%Y-%m-%d %H:%M:%S')
+    return {'status': new_status, 'tid': new_ts, 'datum': new_date}
 
 
 def stamplingar(kortnummer):
@@ -102,6 +103,8 @@ def stamplingar(kortnummer):
     alla_stamplingar = list()
     data = stamplingar.execute("select * from stamplingar order by tid").fetchall()
     for row in data:
-        alla_stamplingar.append({'kortnummer': row[0], 'tid': row[1], 'status': row[2]})
+        datum = datetime.utcfromtimestamp(row[1]).strftime('%Y-%m-%d %H:%M:%S')
+
+        alla_stamplingar.append({'kortnummer': row[0], 'tid': row[1], 'status': row[2], 'datum': datum})
     return alla_stamplingar
 
