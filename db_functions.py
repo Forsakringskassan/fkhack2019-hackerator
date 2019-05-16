@@ -104,7 +104,7 @@ def stamplingar(kortnummer = None, antal = 10):
     if kortnummer is None:
         data = stamplingar.execute("select * from stamplingar order by tid desc limit " + str(antal)).fetchall()
     else:
-        data = stamplingar.execute("select * from stamplingar where kortnummer='" + str(kortnummer) + "' order by tid desc limit" + str(antal)).fetchall()
+        data = stamplingar.execute("select * from stamplingar where kortnummer='" + str(kortnummer) + "' order by tid desc limit " + str(antal)).fetchall()
     for row in data:
         datum = datetime.utcfromtimestamp(row[1]).strftime('%Y-%m-%d %H:%M:%S')
 
