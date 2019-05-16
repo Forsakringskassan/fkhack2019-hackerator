@@ -1,8 +1,11 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/../../')
 from flask import Flask, request, render_template
 from flask_bootstrap import Bootstrap
 from server.hackerator.gui.gui import gui_blueprint
 from server.hackerator.gui.user import user_blueprint
-
+import argparse
 from flask_socketio import SocketIO, emit
 import json
 import db_functions as db
@@ -43,22 +46,11 @@ def toggle(id):
     return json.dumps(returnjson)
 
 
-@application.route("/status/<id>")
-def status(id):
-    return "status" + id
-
-
-@application.route("/stamps/<kortnummer>")
-def stamps(kortnummer):
-    a=db.hamta_anvandare(kortnummer = kortnummer)
-    if not a:
-        print("Anvandaren finns inte.")
-
-    alla_stamplingar = db.stamplingar(kortnummer)
-
-    emit('stamps', {'kortnummer': kortnummer, 'stamps': stamps}, namespace='/gui', broadcast=True)
-    return "Stamps" + kortnummer
-
-
 if __name__ == "__main__":
-    socketio.run(application)
+    parser = argparse.ArgumentParser(description='Parameters for socketio')
+    parser.add_argument('--host', default="127.0.0.1", help='Host')
+    parser.add_argument('--port', default="5000", help='Port')
+    parser.add_argument('--debug', default=False, action='store_true', help='Debug')
+    args = parser.parse_args()
+
+    socketio.run(application, host=args.host, port=args.port, debug=args.debug)
