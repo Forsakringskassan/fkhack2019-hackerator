@@ -3,45 +3,32 @@
 
 {% block navbar %}
 <div class="navbar navbar-fixed-top">
-  <!-- ... -->
+    <!-- ... -->
 </div>
 {% endblock %}
 
 {% block content %}
-  <h1>User {{ kortnummer }}</h1>
-  <div class="container" id="content">
+<h1>User {{ kortnummer }}</h1>
+<div class="container" id="content">
     <div id="status"></div>
     <form action="{{ url_for('toggle', id=rfid, next=request.path) }}" method="get">
-    {% if status == 0 %}
-     <button type="submit" class="btn btn-success">In</button>
-    {% else %}
-      <button type="submit" class="btn btn-danger">Ut</button>
-    {% endif %}
+        {% if status == 0 %}
+        <button type="submit" class="btn btn-success">In</button>
+        {% else %}
+        <button type="submit" class="btn btn-danger">Ut</button>
+        {% endif %}
     </form>
-  </div>
+</div>
 
 
 {% endblock %}
 
 
 {% block scripts %}
-    {{ super() }}
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-    <script type="text/javascript">
-    $(document).ready(function(){
-    //connect to the socket server.
-    var socket = io.connect('http://' + document.domain + ':' + location.port + '/gui');
-    //var numbers_received = [];
-    var numbers_received = JSON.parse('{{userdata|safe}}');
-    //receive details from server
-    socket.on('toggle', function(msg) {
-        console.log("Received toggle for " + msg.kortnummer);
-        if ( msg.kortnummer == {{ kortnummer }} ) {
-        //maintain a list of ten numbers
-        if (numbers_received.length >= 10){
-            numbers_received.shift()
-        }
-        numbers_received.push(msg);
+{{ super() }}
+<script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script type="text/javascript">
+    function displayData() {
         numbers_string = '';
         for (var i = 0; i < numbers_received.length; i++){
             if (numbers_received[i].status == 0 ) {
@@ -56,9 +43,32 @@
             ' - ' + numbers_received[i].datum + '</button></p>';
         }
         $('#status').html(numbers_string);
-    }
-    });
-});
-    </script>
+    };l
+    var numbers_received = JSON.parse('{{userdata|safe}}');
+    $(document).ready(function() {
+        //connect to the socket server.
+        var socket = io.connect('http://' + document.domain + ':' + location.port + '/gui');
+        //var numbers_received = [];
+        var numbers_received = JSON.parse('{{userdata|safe}}');
+        displayData();
+
+        //receive details from server
+        socket.on('toggle', function(msg) {
+            console.log("Received toggle for " + msg.kortnummer);
+            if ( msg.kortnummer == {{ kortnummer }} ) {
+                //maintain a list of ten numbers
+                if (numbers_received.length >= 10){
+                    numbers_received.shift()
+                }
+                numbers_received.push(msg);
+                displayData();
+            }
+        });
+        });
+
+
+
+
+</script>
 
 {% endblock %}

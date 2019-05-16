@@ -8,9 +8,9 @@ def user(kortnr):
     userdata = db.stamplingar(kortnummer=kortnr)
     user = db.hamta_anvandare(kortnummer=kortnr)
     try:
-        status = userdata[-1]['status']
+        status = userdata[0]['status']
     except IndexError:
         status = 0
-    userdata.reverse()
-    return render_template("user.html", kortnummer=kortnr, userdata=dumps(userdata[:10]),
+    // userdata.reverse()
+    return render_template("user.html", kortnummer=kortnr, userdata=dumps(userdata),
                            status=status, rfid=user['rfid'], request=request)
