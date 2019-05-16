@@ -1,4 +1,4 @@
 gunicorn
 Flask
-flask-bootstrap
-flask.ext.socketio
+Flask-Boostrap4
+Flask-SocketIO

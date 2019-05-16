@@ -2,7 +2,7 @@ from flask import Flask, request, render_template
 from flask_bootstrap import Bootstrap
 from server.hackerator.gui.gui import gui_blueprint
 from server.hackerator.gui.user import user_blueprint
-
+import argparse
 from flask_socketio import SocketIO, emit
 import json
 import db_functions as db
@@ -61,4 +61,9 @@ def stamps(kortnummer):
 
 
 if __name__ == "__main__":
-    socketio.run(application)
+    parser = argparse.ArgumentParser(description='Parameters for socketio')
+    parser.add_argument('--host', default="127.0.0.1", help='Host')
+    parser.add_argument('-port', default="5000", help='Port')
+    args = parser.parse_args()
+
+    socketio.run(application, host=args.host, port=args.port)
