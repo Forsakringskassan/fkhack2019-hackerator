@@ -36,6 +36,7 @@ def connect_db():
 def hamta_anvandare(rfid = None, kortnummer = None):
     anvandare, stamplingar = connect_db()
 
+
     if rfid is not None:
         a = anvandare.execute("select * from anvandare where rfid='" + rfid + "'").fetchone()
     else:
