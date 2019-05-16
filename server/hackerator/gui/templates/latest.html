@@ -1,5 +1,5 @@
 {% extends "bootstrap/base.html" %}
-{% block title %}Hackerator stampling{% endblock %}
+{% block title %}Senaste stämplingarna{% endblock %}
 
 {% block navbar %}
 <div class="navbar navbar-fixed-top">
@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Hackeratorz</h1>
+  <h1>Senaste stämplingarna</h1>
 {% endblock %}
 
 {% block scripts %}
@@ -45,18 +45,17 @@
             console.log("Received toggle for " + msg);
             //maintain a list of ten numbers
             if (numbers_received.length >= 10){
-                numbers_received.shift()
+                numbers_received.pop()
             }
-            numbers_received.push(msg);
+            numbers_received.unshift(msg);
             populate();
         });
     });
     </script>
 
-<div class="container" id="content">
-    <div class="row">
-        <p>Senaste händelserna</p>
-    </div>
+<div class="container-fluid" id="content">
+    <img src="static/tillsammans.png" alt="User Image">
+    <p></p>
     <div id="log"></div>
 </div>
 {% endblock %}
