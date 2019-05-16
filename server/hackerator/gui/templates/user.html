@@ -10,13 +10,18 @@
 {% block content %}
 <h1>User {{ kortnummer }}</h1>
 <div class="container" id="content">
-    <form action="{{ url_for('toggle', id=rfid, next=request.path) }}" method="get">
-        {% if status == 0 %}
-        <button type="submit" class="btn btn-success">In</button>
-        {% else %}
-        <button type="submit" class="btn btn-danger">Ut</button>
-        {% endif %}
-    </form>
+
+        <form action="{{ url_for('toggle', id=rfid, next=request.path) }}" method="get">
+            {% if status == 0 %}
+            Status Ute:
+            <button id="knapp" type="submit" class="btn btn-success">In</button>
+            {% else %}
+            Status Inne:
+            <button type="submit" class="btn btn-danger">Ut</button>
+            {% endif %}
+        </form>
+
+    <p></p>
     <div id="status"></div>
 
 </div>
