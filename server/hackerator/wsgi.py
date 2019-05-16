@@ -67,6 +67,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Parameters for socketio')
     parser.add_argument('--host', default="127.0.0.1", help='Host')
     parser.add_argument('--port', default="5000", help='Port')
+    parser.add_argument('--debug', default=False, action='store_true', help='Debug')
     args = parser.parse_args()
 
-    socketio.run(application, host=args.host, port=args.port)
+    socketio.run(application, host=args.host, port=args.port, debug=args.debug)
