@@ -66,7 +66,7 @@ def stamps(kortnummer):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Parameters for socketio')
     parser.add_argument('--host', default="127.0.0.1", help='Host')
-    parser.add_argument('-port', default="5000", help='Port')
+    parser.add_argument('--port', default="5000", help='Port')
     args = parser.parse_args()
 
     socketio.run(application, host=args.host, port=args.port)
