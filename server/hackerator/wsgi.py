@@ -36,7 +36,7 @@ def toggle(id):
     user=db.hamta_anvandare(rfid=id)
 
     if user is None:
-        returnjson = {'kortnummer': 0, 'status': 'fail', 'timestamp': 0}
+        returnjson = {'kortnummer': 0, 'status': '-1', 'timestamp': 0}
     else:
 
         dbanswer = db.stampla(user['kortnummer'])
