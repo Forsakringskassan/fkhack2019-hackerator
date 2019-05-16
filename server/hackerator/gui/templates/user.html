@@ -1,0 +1,24 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}User info{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-fixed-top">
+  <!-- ... -->
+</div>
+{% endblock %}
+
+{% block content %}
+  <h1>User {{ kortnummer }}</h1>
+  <form action="{{ url_for('toggle', id=rfid, next=request.path) }}" method="get">
+  {% if status == 0 %}
+   <button type="submit" class="btn btn-success">In</button>
+  {% else %}
+    <button type="submit" class="btn btn-danger">Ut</button>
+  {% endif %}
+
+  </form>
+{% for row in userdata %}
+<p> {{ row }}</p>
+{% endfor %}
+{% endblock %}
+

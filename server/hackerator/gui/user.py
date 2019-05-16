@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 import db_functions as db
 
 
@@ -13,4 +13,4 @@ def user(kortnr):
         status = 0
     userdata.reverse()
     return render_template("user.html", kortnummer=kortnr, userdata=userdata[:10],
-                           status=status, rfid=user['rfid'])
+                           status=status, rfid=user['rfid'], request=request)
