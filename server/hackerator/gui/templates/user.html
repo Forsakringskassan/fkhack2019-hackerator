@@ -10,7 +10,6 @@
 {% block content %}
 <h1>User {{ kortnummer }}</h1>
 <div class="container" id="content">
-    <div id="status"></div>
     <form action="{{ url_for('toggle', id=rfid, next=request.path) }}" method="get">
         {% if status == 0 %}
         <button type="submit" class="btn btn-success">In</button>
@@ -18,6 +17,8 @@
         <button type="submit" class="btn btn-danger">Ut</button>
         {% endif %}
     </form>
+    <div id="status"></div>
+
 </div>
 
 
@@ -43,27 +44,27 @@
             ' - ' + numbers_received[i].datum + '</button></p>';
         }
         $('#status').html(numbers_string);
-    };l
+    };
     var numbers_received = JSON.parse('{{userdata|safe}}');
     $(document).ready(function() {
         //connect to the socket server.
         var socket = io.connect('http://' + document.domain + ':' + location.port + '/gui');
         //var numbers_received = [];
-        var numbers_received = JSON.parse('{{userdata|safe}}');
+
         displayData();
 
-        //receive details from server
-        socket.on('toggle', function(msg) {
-            console.log("Received toggle for " + msg.kortnummer);
-            if ( msg.kortnummer == {{ kortnummer }} ) {
-                //maintain a list of ten numbers
-                if (numbers_received.length >= 10){
-                    numbers_received.shift()
+            //receive details from server
+            socket.on('toggle', function(msg) {
+                console.log("Received toggle for " + msg.kortnummer);
+                if ( msg.kortnummer == {{ kortnummer }} ) {
+                    //maintain a list of ten numbers
+                    if (numbers_received.length >= 10){
+                        numbers_received.pop()
+                    }
+                    numbers_received.unshift(msg);
+                    displayData();
                 }
-                numbers_received.push(msg);
-                displayData();
-            }
-        });
+            });
         });
 
 
