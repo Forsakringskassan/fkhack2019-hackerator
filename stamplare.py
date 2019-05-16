@@ -8,7 +8,7 @@ import db_functions as db
 
 def stampla(rfid):
     a=db.hamta_anvandare(rfid = rfid)
-    #print(a)
+    print(a)
 
     if not a:
         return {'status': None, 'fel': "Fel: Kortet ar inte registrerat."}

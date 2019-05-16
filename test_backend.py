@@ -24,7 +24,7 @@ data = sys.argv[2]
 #print("D: " + data)
 
 if action == 'stampla':
-    result = stamplare.stampla(data)
+    result = stamplare.stampla(str(data))
     if result['status'] is None:
         print(result['fel'])
     else:

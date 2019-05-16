@@ -18,7 +18,7 @@ def connect_db():
     if not os.path.isfile(anvandare_fil):
         # Skapa databasen anvandare
         anvandare = sqlite3.connect(anvandare_fil)
-        anvandare.execute("create table anvandare(rfid text, kortnummer int, fornamn text, efternamn text);")
+        anvandare.execute("create table anvandare(rfid text, kortnummer text, fornamn text, efternamn text);")
         anvandare.execute("insert into anvandare values ('1234', '40043907', 'Fredrik', 'W');")
         anvandare.commit()
     else:
@@ -27,7 +27,7 @@ def connect_db():
     if not os.path.isfile(stamplingar_fil):
         # Skapa databasen stamplingar
         stamplingar = sqlite3.connect(dbdir + '/hackerator_stamplingar.db')
-        stamplingar.execute("create table stamplingar(kortnummer int, tid real, typ int);")
+        stamplingar.execute("create table stamplingar(kortnummer text, tid real, typ int);")
     else:
         stamplingar = sqlite3.connect(dbdir + '/hackerator_stamplingar.db')
 
@@ -41,7 +41,7 @@ def hamta_anvandare(rfid = None, kortnummer = None):
     if rfid is not None:
         a = anvandare.execute("select * from anvandare where rfid='" + rfid + "'").fetchone()
     else:
-        a = anvandare.execute("select * from anvandare where kortnummer=" + kortnummer).fetchone()
+        a = anvandare.execute("select * from anvandare where kortnummer='" + kortnummer + "'").fetchone()
     if a:
         return {'rfid': a[0], 'kortnummer': a[1], 'fornamn': a[2], 'efternamn': a[3]}
     else:
@@ -60,14 +60,14 @@ def lista_anvandare():
 
 def skapa_anvandare(rfid, kortnummer, fornamn, efternamn):
     anvandare, stamplingar = connect_db()
-    if anvandare.execute("select count(*) from anvandare where kortnummer=" + kortnummer).fetchone()[0] != 0:
-        print("Anvandare med kortnummer " + str(kortnummer) + " finns redan.")
+    if anvandare.execute("select count(*) from anvandare where kortnummer='" + kortnummer + "'").fetchone()[0] != 0:
+        print("Anvandare med kortnummer " + kortnummer + " finns redan.")
         return False
     if anvandare.execute("select count(*) from anvandare where rfid='" + rfid + "'").fetchone()[0] != 0:
         print("Anvandare med RFID-kort " + rfid + " finns redan.")
         return False
 
-    anvandare.execute("insert into anvandare values('" + rfid + "'," + kortnummer + ",'" + fornamn + "','" + efternamn + "')")
+    anvandare.execute("insert into anvandare values('" + rfid + "','" + kortnummer + "','" + fornamn + "','" + efternamn + "')")
     anvandare.commit()
     return True
 
@@ -75,7 +75,7 @@ def skapa_anvandare(rfid, kortnummer, fornamn, efternamn):
 def stampla(kortnummer):
     # Stamplar in. typ: 1=in, 0=ut
     anvandare, stamplingar = connect_db()
-    last_event = stamplingar.execute("select * from stamplingar where kortnummer=" + str(kortnummer) + " order by tid desc limit 1").fetchone()
+    last_event = stamplingar.execute("select * from stamplingar where kortnummer='" + kortnummer + "' order by tid desc limit 1").fetchone()
     #print(last_event)
 
 
@@ -91,7 +91,7 @@ def stampla(kortnummer):
         else:
             new_status = 0
 
-    stamplingar.execute("insert into stamplingar values(" + str(kortnummer) + "," + str(new_ts) + "," + str(new_status) + ");")
+    stamplingar.execute("insert into stamplingar values('" + kortnummer + "'," + str(new_ts) + "," + str(new_status) + ");")
     stamplingar.commit()
     new_date = datetime.utcfromtimestamp(new_ts).strftime('%Y-%m-%d %H:%M:%S')
     return {'status': new_status, 'tid': new_ts, 'datum': new_date}
@@ -104,7 +104,7 @@ def stamplingar(kortnummer = None, antal = 10):
     if kortnummer is None:
         data = stamplingar.execute("select * from stamplingar order by tid desc limit " + str(antal)).fetchall()
     else:
-        data = stamplingar.execute("select * from stamplingar where kortnummer=" + kortnummer + " order by tid desc limit" + antal).fetchall()
+        data = stamplingar.execute("select * from stamplingar where kortnummer='" + kortnummer + "' order by tid desc limit" + antal).fetchall()
     for row in data:
         datum = datetime.utcfromtimestamp(row[1]).strftime('%Y-%m-%d %H:%M:%S')
 
