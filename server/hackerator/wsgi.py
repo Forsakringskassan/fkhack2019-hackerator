@@ -2,10 +2,8 @@ from flask import Flask, request, render_template
 from flask_bootstrap import Bootstrap
 from server.hackerator.gui.gui import gui_blueprint
 from flask_socketio import SocketIO, emit
-import time
 import json
 import db_functions as db
-from datetime import datetime
 
 application = Flask(__name__, static_folder="gui/static")
 application.register_blueprint(gui_blueprint)
@@ -29,14 +27,13 @@ def hello():
 @application.route("/toggle/<id>")
 def toggle(id):
 
-    a=db.hamta_anvandare(rfid=id)
+    user=db.hamta_anvandare(rfid=id)
 
-    if a is None:
+    if user is None:
         returnjson = {'kortnummer': 0, 'status': 'fail', 'timestamp': 0}
     else:
-        status, ts = db.stampla(a['kortnummer'])
-        togglets = datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-        returnjson = {'kortnummer': a['kortnummer'], 'status': status, 'timestamp': togglets},
+        dbanswer = db.stampla(user['kortnummer'])
+        returnjson = {'kortnummer': user['kortnummer'], 'status': dbanswer['status'], 'timestamp': dbanswer['datum']},
         emit('toggle', returnjson, namespace='/gui',
              broadcast=True)
 
