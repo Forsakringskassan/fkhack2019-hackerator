@@ -39,7 +39,7 @@ def toggle(id):
         returnjson = {'kortnummer': 0, 'status': 'fail', 'timestamp': 0}
     else:
         dbanswer = db.stampla(user['kortnummer'])
-        returnjson = {'kortnummer': user['kortnummer'], 'status': dbanswer['status'], 'timestamp': dbanswer['datum']},
+        returnjson = {'kortnummer': user['kortnummer'], 'status': dbanswer['status'], 'datum': dbanswer['datum']},
         emit('toggle', returnjson, namespace='/gui',
              broadcast=True)
 
