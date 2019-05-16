@@ -30,5 +30,38 @@
     });
 
     </script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+    //connect to the socket server.
+    var socket = io.connect('http://' + document.domain + ':' + location.port + '/gui');
+    var numbers_received = [];
+    //receive details from server
+    socket.on('toggle', function(msg) {
+        console.log("Received toggle for " + msg.rfid);
+        //maintain a list of ten numbers
+        if (numbers_received.length >= 10){
+            numbers_received.shift()
+        }
+        numbers_received.push(msg);
+        numbers_string = '';
+        for (var i = 0; i < numbers_received.length; i++){
+            numbers_string = numbers_string + '<p>' + numbers_received[i].kortnummer +
+            " timestamp " + numbers_received[i].timestamp +
+            " status:" + numbers_received[i].status + "JSON: " +
+            JSON.stringify(numbers_received[i]) + '</p>';
+        }
+        $('#log').html(numbers_string);
+    });
+});
+    </script>
 
+<div class="container" id="content">
+    <div class="row">
+        <p>Senaste händelserna</p>
+
+
+        <div id="log">
+        </div> <!-- /#log -->
+    </div>
+</div>
 {% endblock %}
