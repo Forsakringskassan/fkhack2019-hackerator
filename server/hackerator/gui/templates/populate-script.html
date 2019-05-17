@@ -1,0 +1,17 @@
+function populate() {
+    data_string = '';
+    for (var i = 0; i < data_received.length; i++){
+        if (data_received[i].status == 0 ) {
+            buttontype = "btn btn-danger"
+            buttontext = 'Ut'
+        } else {
+            buttontype = "btn btn-success"
+            buttontext = "In"
+        }
+        data_string = data_string + '<p><button type="button" class="' + buttontype + '">' +
+        buttontext + ' - Kortnummer: ' + data_received[i].kortnummer +
+        ' - ' + data_received[i].datum + '</button></p>';
+    }
+    $('#log').html(data_string);
+
+};
