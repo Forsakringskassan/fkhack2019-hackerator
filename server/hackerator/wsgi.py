@@ -1,7 +1,7 @@
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/../../')
-from flask import Flask, request, render_template
+from flask import Flask, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 from server.hackerator.gui.latest import gui_blueprint
 from server.hackerator.gui.user import user_blueprint
@@ -32,8 +32,8 @@ def hello():
 
 @application.route("/toggle/<id>")
 def toggle(id):
-
-    user=db.hamta_anvandare(rfid=id)
+    next = request.args.get('next')
+    user = db.hamta_anvandare(rfid=id)
 
     if user is None:
         returnjson = {'kortnummer': 0, 'status': '-1', 'timestamp': 0}
@@ -42,7 +42,8 @@ def toggle(id):
         dbanswer = db.stampla(user['kortnummer'])
         returnjson = {'kortnummer': user['kortnummer'], 'status': dbanswer['status'], 'datum': dbanswer['datum']}
         emit('toggle', returnjson, namespace='/gui', broadcast=True)
-
+    if next:
+        return redirect(url_for(next))
     return json.dumps(returnjson)
 
 

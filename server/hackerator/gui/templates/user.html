@@ -12,16 +12,9 @@
 <div class="container-fluid" id="content">
     <img src="../static/tillsammans.png">
     <p></p>
-        <form action="{{ url_for('toggle', id=rfid, next=request.path) }}" method="get">
-            {% if status == 0 %}
-            Status Ute:
-            <button id="knapp" type="submit" class="btn btn-success">In</button>
-            {% else %}
-            Status Inne:
-            <button type="submit" class="btn btn-danger">Ut</button>
-            {% endif %}
+        <form action="{{ url_for('toggle', id=rfid) }}" method="get">
+            <button id="knapp" onclick="toggle()"> <img id="myImg" src="../static/{% if status == 0 %}in.png{% else %}ut.png{% endif %}" width="130" height="98"><</button>
         </form>
-
     <p></p>
     <div id="log"></div>
 
@@ -62,5 +55,32 @@
         });
 
 </script>
-
+<script type="text/javascript">
+    function toggle() {
+        var knappar = ["../static/in.png", "../static/ut.png"];
+        console.log("Knappar", knappar.toString())
+        console.log("Status", data_received)
+        document.getElementById("myImg").src=knappar[data_received[0].status];
+    }
+</script>
+<script type="text/javascript">
+    $(function() {
+        $("form").submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData($(this));
+            $.ajax({
+                url: "{{ url_for('toggle', id=rfid) }}",
+                type: 'GET',
+                data: formData,
+                async: true,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+        })
+    });
+</script>
 {% endblock %}
