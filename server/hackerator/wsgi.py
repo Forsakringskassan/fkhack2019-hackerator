@@ -3,7 +3,7 @@ import os
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/../../')
 from flask import Flask, request, render_template
 from flask_bootstrap import Bootstrap
-from server.hackerator.gui.latest import gui_blueprint
+from server.hackerator.gui.index import gui_blueprint
 from server.hackerator.gui.user import user_blueprint
 import argparse
 from flask_socketio import SocketIO, emit
@@ -15,11 +15,6 @@ application.register_blueprint(gui_blueprint)
 application.register_blueprint(user_blueprint)
 bootstrap = Bootstrap(application)
 socketio = SocketIO(application)
-
-
-@application.route("/")
-def hello():
-    return "Hackeratorn says no!"
 
 
 @application.route("/toggle/<id>")
