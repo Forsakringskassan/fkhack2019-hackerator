@@ -20,7 +20,9 @@ def connect_db():
         anvandare = sqlite3.connect(anvandare_fil)
         anvandare.execute("create table anvandare(rfid text, kortnummer text, fornamn text, efternamn text);")
         anvandare.execute("insert into anvandare values ('82_128_255_19_62', '40043907', 'Fredrik', 'Wänglund');")
+        anvandare.commit()
         anvandare.execute("insert into anvandare values ('111_183_106_77_255', '66112362', 'Mikael', 'Sundberg');")
+        anvandare.commit()
         anvandare.execute("insert into anvandare values ('178_211_127_18_12', '40043377', 'Erik', 'Lidström');")
         anvandare.commit()
     else:
