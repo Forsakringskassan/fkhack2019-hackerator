@@ -13,4 +13,4 @@ def user(kortnr):
         status = 0
     # userdata.reverse()
     return render_template("user.html", kortnummer=kortnr, userdata=dumps(userdata),
-                           status=status, rfid=usr['rfid'], request=request)
+                           status=status, usr=usr, request=request)

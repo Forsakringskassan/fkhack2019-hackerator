@@ -8,16 +8,29 @@
 {% endblock %}
 
 {% block content %}
-<h1>User {{ kortnummer }}</h1>
-<div class="container-fluid" id="content">
-    <img src="../static/tillsammans.png">
-    <p></p>
-        <form action="{{ url_for('toggle', id=rfid) }}" method="get">
-            <button id="knapp" onclick="toggle()"> <img id="myImg" src="../static/{% if status == 0 %}in.png{% else %}ut.png{% endif %}" width="130" height="98"><</button>
-        </form>
-    <p></p>
-    <div id="log"></div>
+<style type="text/css">
+        body  {
+          background-image: url("../static/background1920x1200.jpg");
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-color: #046A38;
+        }
+</style>
 
+<h1><center>{{ usr['fornamn'] }} {{ usr['efternamn'] }}</center></h1>
+<div class="container-fluid h-100" id="content">
+        <div class="row h-100 justify-content-center align-items-center">
+        <p></p>
+
+            <form action="{{ url_for('toggle', id=usr['rfid']) }}" method="get">
+                <button id="knapp" onclick="toggle()"> <img id="myImg" src="../static/{% if status == 0 %}in.png{% else %}ut.png{% endif %}" width="130" height="98"><</button>
+            </form>
+        <p></p>
+        </div>
+        <div class="row h-100 justify-content-center align-items-center">
+
+        <div id="log"></div>
+    </div>
 </div>
 
 
@@ -50,6 +63,7 @@
                     }
                     data_received.unshift(msg);
                     populate();
+                    toggle();
                 }
             });
         });
@@ -69,7 +83,7 @@
             e.preventDefault();
             var formData = new FormData($(this));
             $.ajax({
-                url: "{{ url_for('toggle', id=rfid) }}",
+                url: "{{ url_for('toggle', id=usr['rfid']) }}",
                 type: 'GET',
                 data: formData,
                 async: true,
