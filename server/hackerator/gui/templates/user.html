@@ -27,7 +27,7 @@
                 <div class="card-body">
 
                     <form action="{{ url_for('toggle', id=usr['rfid']) }}" method="get">
-                        <button id="knapp" onclick="toggle()"> <img id="myImg" src="../static/{% if status == 0 %}in.png{% else %}ut.png{% endif %}" width="130" height="50"><</button>
+                        <button id="knapp" onclick="toggle()"> <img id="myImg" src="../static/{% if status == 0 %}in.png{% else %}ut.png{% endif %}" width="130" height="50"></button>
                     </form>
 
                 </div>
