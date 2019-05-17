@@ -15,14 +15,6 @@ application.register_blueprint(gui_blueprint)
 application.register_blueprint(user_blueprint)
 bootstrap = Bootstrap(application)
 socketio = SocketIO(application)
-@socketio.on('connect', namespace='/gui')
-def gui_connect():
-    print("Client connected")
-
-
-@socketio.on('disconnect', namespace='/gui')
-def gui_disconnect():
-    print("Client disconnected")
 
 
 @application.route("/")
