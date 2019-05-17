@@ -2,13 +2,16 @@
 {% block title %}Senaste stämplingarna{% endblock %}
 
 {% block navbar %}
-<div class="navbar navbar-fixed-top">
-  <!-- ... -->
-</div>
+    <div class="navbar navbar-fixed-top"></div>
 {% endblock %}
 
 {% block content %}
-  <h1>Senaste stämplingarna</h1>
+    <h1>Senaste stämplingarna</h1>
+    <div class="container-fluid" id="content">
+        <img src="../static/tillsammans.png" alt="User Image">
+        <p></p>
+        <div id="log"></div>
+    </div>
 {% endblock %}
 
 {% block scripts %}
@@ -16,25 +19,9 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
     <script type="text/javascript">
 
-    var numbers_received = JSON.parse('{{latest|safe}}');
+    var data_received = JSON.parse('{{latest|safe}}');
 
-    function populate() {
-        numbers_string = '';
-        for (var i = 0; i < numbers_received.length; i++){
-            if (numbers_received[i].status == 0 ) {
-                buttontype = "btn btn-danger"
-                buttontext = 'Ut'
-            } else {
-                buttontype = "btn btn-success"
-                buttontext = "In"
-            }
-            numbers_string = numbers_string + '<p><button type="button" class="' + buttontype + '">' +
-            buttontext + ' - Kortnummer: ' + numbers_received[i].kortnummer +
-            ' - ' + numbers_received[i].datum + '</button></p>';
-        }
-        $('#log').html(numbers_string);
-
-    };
+    {% include 'populate-script.html' %}
 
     $(document).ready(function(){
         //connect to the socket server.
@@ -44,18 +31,12 @@
         socket.on('toggle', function(msg) {
             console.log("Received toggle for " + msg);
             //maintain a list of ten numbers
-            if (numbers_received.length >= 10){
-                numbers_received.pop()
+            if (data_received.length >= 10){
+                data_received.pop()
             }
-            numbers_received.unshift(msg);
+            data_received.unshift(msg);
             populate();
         });
     });
     </script>
-
-<div class="container-fluid" id="content">
-    <img src="../static/tillsammans.png" alt="User Image">
-    <p></p>
-    <div id="log"></div>
-</div>
 {% endblock %}
