@@ -8,9 +8,10 @@ function populate() {
             buttontype = "btn btn-success"
             buttontext = "In"
         }
-        data_string = data_string + '<p><button type="button" class="' + buttontype + '">' +
+
+        data_string = data_string + '<a href="/user/' + data_received[i].kortnummer + '" class="' + buttontype + '">' +
         buttontext + ' - Kortnummer: ' + data_received[i].kortnummer +
-        ' - ' + data_received[i].datum + '</button></p>';
+        ' - ' + data_received[i].datum + '</a><br>';
     }
     $('#log').html(data_string);
 
