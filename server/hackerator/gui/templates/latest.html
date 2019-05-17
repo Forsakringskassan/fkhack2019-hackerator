@@ -1,16 +1,27 @@
 {% extends "bootstrap/base.html" %}
 {% block title %}Senaste stämplingarna{% endblock %}
 
+
 {% block navbar %}
     <div class="navbar navbar-fixed-top"></div>
 {% endblock %}
 
 {% block content %}
-    <h1>Senaste stämplingarna</h1>
-    <div class="container-fluid" id="content">
-        <img src="../static/tillsammans.png" alt="User Image">
+    <style type="text/css">
+        body  {
+          background-image: url("static/background1920x1200.jpg");
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-color: #046A38;
+        }
+    </style>
+    <br><br><br><br><br>
+    <div class="container-fluid h-100" id="content">
+        <h1 align="center" style="color:white;">Senaste instämplingar</h1>
         <p></p>
-        <div id="log"></div>
+        <div class="row h-100 justify-content-center align-items-center">
+            <div id="log"></div>
+        </div>
     </div>
 {% endblock %}
 
